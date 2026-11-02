@@ -1,0 +1,744 @@
+{
+  "_": {
+    "postman_id": "2ebf767a-d9ac-4a2e-9a49-af2283382dc0"
+  },
+  "item": [
+    {
+      "id": "f4c4bb19-bdb5-43ba-8a14-440714f85460",
+      "name": "user",
+      "item": [
+        {
+          "id": "212871d5-343c-410b-8b7c-ddd49e1d4d5d",
+          "name": "register",
+          "request": {
+            "description": "Buat akun dummy sekali. Jika email sudah terdaftar (422), gunakan login atau ganti variabel email. Salin data.token dari respons ke Current value variabel token.",
+            "url": {
+              "path": [
+                "api",
+                "register"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Siswa TimeDoor\",\n  \"email\": \"{{email}}\",\n  \"password\": \"belajar123\",\n  \"password_confirmation\": \"belajar123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "b2600dda-ea7b-4e09-9012-29e90d469c65",
+          "name": "login",
+          "request": {
+            "description": "Login dengan akun dummy. Salin data.token dari respons ke Current value variabel token.",
+            "url": {
+              "path": [
+                "api",
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"belajar123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "598c632a-a54e-4731-b3c7-17d5a5d7e0f5",
+          "name": "logout",
+          "request": {
+            "description": "Jalankan setelah selesai. Mencabut token yang sedang dipakai.",
+            "url": {
+              "path": [
+                "api",
+                "logout"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "89e2cecd-691c-4cec-8b2f-669b8472588a",
+      "name": "product",
+      "item": [
+        {
+          "id": "a61606c9-bd3b-4e4b-9019-ab0a3ddd74c1",
+          "name": "get products",
+          "request": {
+            "description": "Daftar produk beserta category, brand, dan metadata pagination. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "c836a1b5-f5be-4a90-a973-281a6ca14ba5",
+          "name": "search, sort, pagination",
+          "request": {
+            "description": "Satu contoh query gabungan. Ubah keyword, sort, per_page dan page di Params. Filter category_id/brand_id dapat ditambahkan bila diperlukan.",
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "kaos"
+                },
+                {
+                  "key": "sort",
+                  "value": "price_asc"
+                },
+                {
+                  "key": "per_page",
+                  "value": "5"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "e0c10c7e-6808-4edf-8d1f-8edffc2af8bd",
+          "name": "get product detail",
+          "request": {
+            "description": "Ubah productId pada Variables atau gunakan ID dari create product. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "a24082d1-7a85-4718-b306-b306eee1ab96",
+          "name": "create product",
+          "request": {
+            "description": "Login dahulu. categoryId dan brandId harus ada pada daftar category/brand. Isi variabel productId dari ID respons. HTTP 201.",
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kaos TimeDoor\",\n  \"description\": \"Contoh produk tugas\",\n  \"image_url\": \"https://example.com/kaos.jpg\",\n  \"price\": 75000,\n  \"stock\": 10,\n  \"category_id\": \"{{categoryId}}\",\n  \"brand_id\": \"{{brandId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "b6f64fe1-af42-4c69-af2d-84f4287884fb",
+          "name": "update product",
+          "request": {
+            "description": "Mengubah produk hasil create. Semua field wajib dikirim untuk PUT. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kaos TimeDoor Update\",\n  \"description\": \"Contoh produk sesudah diubah\",\n  \"image_url\": \"https://example.com/kaos.jpg\",\n  \"price\": 80000,\n  \"stock\": 8,\n  \"category_id\": \"{{categoryId}}\",\n  \"brand_id\": \"{{brandId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "f85f4a0a-6a7c-45a3-abdd-b4c15923e8a1",
+          "name": "delete product",
+          "request": {
+            "description": "Hanya hapus produk dummy yang dibuat sendiri. HTTP 204 berarti berhasil dan body kosong.",
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "0b7fde7c-5d4f-4110-8ce8-8276f60c0193",
+      "name": "category",
+      "item": [
+        {
+          "id": "7653f767-69a5-480a-be9e-a41344ec2e2d",
+          "name": "get categories",
+          "request": {
+            "description": "Daftar category. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "categories"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "5448e3b0-0de0-43e7-8f76-38e864ca26d4",
+          "name": "get category detail",
+          "request": {
+            "description": "Detail category dan produk terkait. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "ac053b05-c7de-488b-94b4-6a2c45e1a1cb",
+          "name": "create category",
+          "request": {
+            "description": "Buat data dummy sendiri. Isi variabel ID terkait dari respons. HTTP 201.",
+            "url": {
+              "path": [
+                "api",
+                "categories"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kategori TimeDoor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "6f77597c-2810-48d6-af46-9d168972b558",
+          "name": "update category",
+          "request": {
+            "description": "Ubah data dummy yang dibuat sendiri. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kategori TimeDoor Update\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "ac88df91-7a0a-48a7-ad3a-c5aa4c6963a7",
+          "name": "delete category",
+          "request": {
+            "description": "Hanya hapus data dummy sendiri setelah produknya dihapus. HTTP 204; 409 jika masih dipakai produk.",
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9298f5bf-ff41-4001-b799-84f61c225454",
+      "name": "brand",
+      "item": [
+        {
+          "id": "f8270f2d-10a9-4e99-b750-bf4272f38bc9",
+          "name": "get brands",
+          "request": {
+            "description": "Daftar brand. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "brands"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "cdea9126-da27-48ac-8dba-e8ddc6a4ff2a",
+          "name": "get brand detail",
+          "request": {
+            "description": "Detail brand dan produk terkait. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brandId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "f2bb31b6-c573-4487-81f3-27ecbc4ac43a",
+          "name": "create brand",
+          "request": {
+            "description": "Buat data dummy sendiri. Isi variabel ID terkait dari respons. HTTP 201.",
+            "url": {
+              "path": [
+                "api",
+                "brands"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Merek TimeDoor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "a66e8470-d617-4da2-ba3c-bd7637feb2f3",
+          "name": "update brand",
+          "request": {
+            "description": "Ubah data dummy yang dibuat sendiri. HTTP 200.",
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brandId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Merek TimeDoor Update\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "23534f65-082b-42f9-9beb-a8492699b350",
+          "name": "delete brand",
+          "request": {
+            "description": "Hanya hapus data dummy sendiri setelah produknya dihapus. HTTP 204; 409 jika masih dipakai produk.",
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brandId}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": []
+        }
+      ],
+      "event": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "type": "string",
+        "value": "{{token}}",
+        "key": "token"
+      }
+    ]
+  },
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://127.0.0.1:8004",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "siswa.timedoor@example.test",
+      "key": "email"
+    },
+    {
+      "type": "string",
+      "value": "",
+      "key": "token"
+    },
+    {
+      "type": "string",
+      "value": "",
+      "key": "productId"
+    },
+    {
+      "type": "string",
+      "value": "",
+      "key": "categoryId"
+    },
+    {
+      "type": "string",
+      "value": "",
+      "key": "brandId"
+    }
+  ],
+  "info": {
+    "_postman_id": "2ebf767a-d9ac-4a2e-9a49-af2283382dc0",
+    "name": "finalproj - TimeDoor Pro",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Koleksi manual tugas TimeDoor Pro: 19 request dalam user/product/category/brand. Jalankan dengan Send satu per satu. baseUrl menunjuk server QA port 8004. Setelah register/login, salin data.token dari respons ke Current value variabel token. Isi productId/categoryId/brandId dari ID respons. Tidak memakai skrip otomatis atau Runner; tes lanjutan disimpan terpisah."
+  }
+}

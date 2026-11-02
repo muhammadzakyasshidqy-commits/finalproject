@@ -1,9 +1,11 @@
 # Pemeriksaan publikasi source
 
-Tanggal: 2 November 2026. Pemeriksaan mencakup tujuh commit lokal dan 116 blob historis, nama file, pesan commit, metadata penulis, template environment, source aplikasi, migration/seeder, tes serta seluruh dokumentasi. Pola credential/token/private key dan referensi data privat diperiksa.
+Tanggal: 2 November 2026. Source berasal dari proyek finalproject asli. Riwayat lokal lama diperiksa pada publikasi pertama (7 commit, 116 blob); metadata pribadi dan catatan lokalnya tetap lokal. Riwayat public dimulai dari commit root c38537f dengan email GitHub noreply. Pembaruan ini menambahkan web sederhana dan collection Postman manual 19 request pada repository public yang sama.
 
-Riwayat lama memuat metadata pribadi dan catatan lokal, sehingga tetap disimpan lokal. Repository public dibuat dari snapshot terverifikasi dengan satu commit root baru memakai alamat GitHub noreply. File aplikasi, konfigurasi template, migration, seeder dan tes dicocokkan hash per file dengan versi yang diuji; hanya dokumentasi publik yang disesuaikan. Tidak ada proyek pengganti atau perubahan perilaku aplikasi.
+Seluruh file calon commit diperiksa kembali terhadap nilai rahasia environment lokal, pola token/credential/private key, alamat email pribadi dari riwayat lokal, lokasi home PC, file runtime/database dan metadata commit. File .env asli, database/SQL, data pribadi/klien, backup, log/cache, vendor serta token aktif tidak disertakan. Password fixture hanya untuk akun example.test. Email penulis dependency upstream pada composer.lock merupakan metadata publik paket. Slide privat tidak disertakan.
 
-File environment asli, database/SQL, data pribadi atau klien, backup, log/cache runtime, vendor, token aktif, dan alamat pribadi pada metadata commit tidak dipublikasikan. Bukti tes berisi ringkasan status dan assertions tanpa request/response body kredensial. Password contoh pada test dan collection adalah fixture untuk akun example.test, bukan credential aplikasi asli. Metadata penulis paket upstream dalam composer.lock merupakan metadata publik dependency. Materi slide privat tidak disertakan.
+Perubahan source aplikasi dibatasi pada route root web, Blade, CSS dan JavaScript. Endpoint API, model, controller, migration, seeder dan tes backend sama dengan versi backend yang telah diuji. SOURCE_INTEGRITY.json mencatat hash Git blob dan SHA256 96 file source/konfigurasi/tes, termasuk web. Collection manual tidak memiliki Scripts; token serta ID awal kosong. Collection lengkap 57 request tetap terpisah.
 
-Pemeriksaan ini tidak menggantikan audit keamanan independen. Advisori framework Laravel 10 tetap dicatat secara terbuka pada SECURITY_REVIEW.md. Source GitHub bukan deployment server aplikasi.
+Bukti: Laravel 17 tests/135 assertions; collection manual 19 request diuji HTTP; register/login dan CRUD inti diamati pada Postman VS Code; alur web diuji browser pada database QA. Data dummy katalog dibersihkan dan token QA aktif kembali 0. Ringkasan bukti tidak berisi response body kredensial.
+
+Advisori framework Laravel 10 tetap dicatat pada SECURITY_REVIEW.md. Publikasi source GitHub bukan deployment server aplikasi.

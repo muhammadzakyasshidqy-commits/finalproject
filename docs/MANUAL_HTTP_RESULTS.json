@@ -1,0 +1,214 @@
+{
+  "verified_at": "2026-11-02T05:02:07.608Z",
+  "collection": "finalproj - TimeDoor Pro",
+  "base_url": "http://127.0.0.1:8004",
+  "unique_requests": 19,
+  "http_executions": 20,
+  "all_passed": true,
+  "fixtures_removed": true,
+  "tokens_revoked": true,
+  "results": [
+    {
+      "request": "user/register",
+      "method": "POST",
+      "status": 201,
+      "response_shape": [
+        "message",
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "user/login",
+      "method": "POST",
+      "status": 200,
+      "response_shape": [
+        "message",
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "category/create category",
+      "method": "POST",
+      "status": 201,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "category/get categories",
+      "method": "GET",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "category/get category detail",
+      "method": "GET",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "category/update category",
+      "method": "PUT",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "brand/create brand",
+      "method": "POST",
+      "status": 201,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "brand/get brands",
+      "method": "GET",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "brand/get brand detail",
+      "method": "GET",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "brand/update brand",
+      "method": "PUT",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "product/create product",
+      "method": "POST",
+      "status": 201,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "product/get products",
+      "method": "GET",
+      "status": 200,
+      "response_shape": [
+        "current_page",
+        "data",
+        "first_page_url",
+        "from",
+        "last_page",
+        "last_page_url",
+        "links",
+        "next_page_url",
+        "path",
+        "per_page",
+        "prev_page_url",
+        "to",
+        "total"
+      ],
+      "passed": true
+    },
+    {
+      "request": "product/search, sort, pagination",
+      "method": "GET",
+      "status": 200,
+      "response_shape": [
+        "current_page",
+        "data",
+        "first_page_url",
+        "from",
+        "last_page",
+        "last_page_url",
+        "links",
+        "next_page_url",
+        "path",
+        "per_page",
+        "prev_page_url",
+        "to",
+        "total"
+      ],
+      "passed": true
+    },
+    {
+      "request": "product/get product detail",
+      "method": "GET",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "product/update product",
+      "method": "PUT",
+      "status": 200,
+      "response_shape": [
+        "data"
+      ],
+      "passed": true
+    },
+    {
+      "request": "product/delete product",
+      "method": "DELETE",
+      "status": 204,
+      "response_shape": [],
+      "passed": true
+    },
+    {
+      "request": "category/delete category",
+      "method": "DELETE",
+      "status": 204,
+      "response_shape": [],
+      "passed": true
+    },
+    {
+      "request": "brand/delete brand",
+      "method": "DELETE",
+      "status": 204,
+      "response_shape": [],
+      "passed": true
+    },
+    {
+      "request": "user/logout",
+      "method": "POST",
+      "status": 200,
+      "response_shape": [
+        "message"
+      ],
+      "passed": true
+    },
+    {
+      "request": "user/logout",
+      "method": "POST",
+      "status": 200,
+      "response_shape": [
+        "message"
+      ],
+      "passed": true
+    }
+  ],
+  "collection_sha256": "ec00d7c167c2adfc329120affbfe4988286d508eac45d0571b563671afcfe5df",
+  "collection_scripts": 0
+}

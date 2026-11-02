@@ -21,7 +21,7 @@ Referensi contoh bukan kontrak byte-for-byte yang identik. Implementasi memperta
 
 Terlihat enam layar: Home, Login, Register, Create, Update, delete. Home memuat kartu produk, nama/harga/stok, search, sorting dan aksi edit/hapus. Register memuat name/email/password/confirm password. Form create/update memuat nama produk, Link URL Gambar, harga dan stok. Alur backend mendukung layar tersebut; image_url opsional ditambahkan pada migration baru agar URL gambar tersimpan dan tervalidasi. URL hanya disimpan, server tidak mengunduhnya.
 
-Tidak dibuat ulang frontend atau kecocokan pixel layar; tugas ini berfokus pada REST API.
+Web sederhana kini mengikuti alur enam layar tersebut menggunakan API yang sama. Tidak menambah keranjang/checkout atau dashboard; pencocokan ini berfokus pada alur dan field, bukan kesamaan pixel.
 
 ## Slide offline TimeDoor Pro
 

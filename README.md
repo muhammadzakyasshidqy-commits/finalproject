@@ -6,6 +6,14 @@ Repository pengumpulan: [muhammadzakyasshidqy-commits/finalproject](https://gith
 
 Fitur: CRUD products/categories/brands; Eloquent relationships; validasi; register/login/profile/logout dengan Sanctum; searching, sorting, filtering dan pagination; migration serta seeder repeatable. Field image_url opsional mengikuti mockup guru.
 
+## Web sederhana
+
+Root `/` menampilkan katalog, login/register, tambah/edit produk dan konfirmasi hapus sesuai alur mockup guru, menggunakan API yang sama. Tidak perlu npm/build. URL sesi lokal saat ini: **http://127.0.0.1:8003**; QA terpisah: **http://127.0.0.1:8004**. [Hasil uji web](docs/WEB_RESULTS.md).
+
+## Postman untuk tugas
+
+Gunakan **finalproj - TimeDoor Pro** dari [collection manual](docs/finalproj-TimeDoor.postman_collection.json): **19 request** dalam folder user/product/category/brand. Pilih request lalu Send. [Petunjuk singkat](docs/POSTMAN_MANUAL.md). Collection 57 request di bawah tetap disimpan sebagai tes lanjutan.
+
 ## Setup
 
 Gunakan PHP >=8.1, Composer dan MySQL/MariaDB (misalnya Laragon).
@@ -15,7 +23,7 @@ Gunakan PHP >=8.1, Composer dan MySQL/MariaDB (misalnya Laragon).
 3. Jalankan `php artisan key:generate` hanya jika APP_KEY belum tersedia.
 4. Jalankan `php artisan migrate`, kemudian `php artisan db:seed`.
 5. Jalankan `php artisan serve --host=127.0.0.1 --port=8001`.
-6. Buka `http://127.0.0.1:8001/api/products` melalui Postman.
+6. Buka `http://127.0.0.1:8001` untuk web atau `/api/products` melalui Postman.
 
 Seeder default membuat 25 produk, 5 kategori dan 5 merek. Seeder dapat diulang. Migration tambahan menjaga data lama; jangan menjalankan migrate:fresh pada database yang berisi data penting.
 

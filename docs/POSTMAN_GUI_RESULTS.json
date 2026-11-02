@@ -1,0 +1,99 @@
+{
+  "verified_date": "2026-11-02",
+  "application": "Postman extension in Visual Studio Code",
+  "collection": "finalproj - TimeDoor Pro",
+  "request_count": 19,
+  "scripts_in_final_manual_collection": 0,
+  "sidebar_filter": "finalproj - TimeDoor Pro",
+  "visible_folders": [
+    "user",
+    "product",
+    "category",
+    "brand"
+  ],
+  "base_url": "http://127.0.0.1:8004",
+  "results": [
+    {
+      "request": "user/register",
+      "status": 201,
+      "phase": "before removing variable scripts"
+    },
+    {
+      "request": "user/login",
+      "status": 200,
+      "phase": "before removing variable scripts"
+    },
+    {
+      "request": "category/create category",
+      "status": 201,
+      "fixture_id": 11,
+      "phase": "final manual collection"
+    },
+    {
+      "request": "product/create product",
+      "status": 201,
+      "fixture_id": 40,
+      "phase": "final manual collection"
+    },
+    {
+      "request": "product/update product",
+      "status": 200,
+      "fixture_id": 40,
+      "phase": "final manual collection"
+    },
+    {
+      "request": "product/delete product",
+      "status": 204,
+      "fixture_id": 40,
+      "phase": "final manual collection"
+    },
+    {
+      "request": "category/delete category",
+      "status": 204,
+      "fixture_id": 11,
+      "phase": "final manual collection"
+    },
+    {
+      "request": "user/logout",
+      "status": 200,
+      "phase": "final manual collection"
+    },
+    {
+      "request": "product/search, sort, pagination",
+      "status": 200,
+      "phase": "final manual collection"
+    },
+    {
+      "request": "product/get products",
+      "status": 200,
+      "phase": "final manual collection"
+    }
+  ],
+  "diagnostic_findings": [
+    "Variables assigned by request scripts did not carry into the next manual request during this extension session; protected requests initially returned 401.",
+    "Final collection intentionally has no Scripts. Token and IDs are entered manually in Current value and saved with the collection Save button.",
+    "Empty categoryId/brandId produced 422 before the values were correctly entered; create product then returned 201."
+  ],
+  "final_visible_request": "product/get products",
+  "final_visible_status": 200,
+  "token_and_fixture_variables_empty_in_ui": true,
+  "old_collections_preserved": [
+    "Arsip - finalproj lama",
+    "Cadangan - finalproj asli",
+    "Arsip - helper",
+    "TimeDoor FinalProject — Verified API"
+  ],
+  "collection_sha256": "ec00d7c167c2adfc329120affbfe4988286d508eac45d0571b563671afcfe5df",
+  "fixture_cleanup": {
+    "database": "finalproject_qa_20261102",
+    "registration_token_14_revoked": true,
+    "products": 25,
+    "categories": 5,
+    "brands": 5,
+    "active_tokens": 0,
+    "gui_product_40_absent": true,
+    "gui_category_11_absent": true
+  },
+  "final_ui_input_guidance": "Double-click Current value, enter token/ID, press Tab, then click collection Save. Initial values remain empty for token and fixture IDs.",
+  "publication_performed_during_gui_run": false
+}
