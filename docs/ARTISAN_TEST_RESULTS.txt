@@ -1,0 +1,29 @@
+Console transcript; whitespace and status glyphs normalized.
+
+PASS  Tests\Unit\ExampleTest
+  PASS that true is true                                                                                            0.07s
+
+   PASS  Tests\Feature\ApiEdgeCaseTest
+  PASS api errors are json even without accept header                                                               0.93s
+  PASS product numbers fit mysql columns                                                                            0.17s
+  PASS zero keyword is a real search                                                                                0.09s
+  PASS unvalidated fields cannot change ids or leak passwords                                                       0.09s
+  PASS non string credentials cannot bypass sanctum                                                                 0.08s
+  PASS product image url matches the teacher mockup                                                                 0.08s
+
+   PASS  Tests\Feature\ExampleTest
+  PASS the application returns a successful response                                                                0.12s
+
+   PASS  Tests\Feature\MarketplaceApiTest
+  PASS suite uses an isolated sqlite database                                                                       0.06s
+  PASS register login profile logout and revocation                                                                 0.17s
+  PASS invalid or duplicate registration and bad login                                                              0.12s
+  PASS public read and protected writes                                                                             0.12s
+  PASS product crud and partial update                                                                              0.12s
+  PASS product validation and not found                                                                             0.09s
+  PASS search filter sort and pagination combined                                                                   0.10s
+  PASS category and brand crud and relation conflict                                                                0.14s
+  PASS repeatable seeder creates five categories five brands and 25 products                                        0.14s
+
+  Tests:    17 passed (135 assertions)
+  Duration: 3.22s

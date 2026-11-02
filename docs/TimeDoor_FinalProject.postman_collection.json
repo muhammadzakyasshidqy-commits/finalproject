@@ -1,0 +1,3078 @@
+{
+  "_": {
+    "postman_id": "c064feda-70a1-4c22-becc-09346c7cb849"
+  },
+  "item": [
+    {
+      "id": "8a53bd9d-86e4-4a5f-96ff-9cf87d2bb68e",
+      "name": "01 Authentication",
+      "item": [
+        {
+          "id": "079cd29a-33a1-4988-b58d-1fb16819413b",
+          "name": "Register disposable QA user",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "register"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA Student\",\"email\":\"{{email}}\",\"password\":\"DemoPass123!\",\"password_confirmation\":\"DemoPass123!\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "4163c8ce-706f-426e-be96-aaaeb897f820",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('run_id',Date.now()+'-'+Math.floor(Math.random()*10000));",
+                  "pm.collectionVariables.set('email','qa.'+pm.collectionVariables.get('run_id')+'@example.test');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "80197916-344a-458a-8ad3-44ca872faa7a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201',()=>pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('register_token',pm.response.json().data.token);",
+                  "pm.test(\"No password or remember token\",()=>{const u=pm.response.json().data.user;pm.expect(u).not.to.have.property('password');pm.expect(u).not.to.have.property('remember_token');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "71e6e3fc-2e1c-497a-ae29-e9a1814a3af0",
+          "name": "Login and save token",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "login"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"{{email}}\",\"password\":\"DemoPass123!\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "744747ae-0352-449a-afd1-c0e1c0acd074",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('token',pm.response.json().data.token);",
+                  "pm.test(\"No password or remember token\",()=>{const u=pm.response.json().data.user;pm.expect(u).not.to.have.property('password');pm.expect(u).not.to.have.property('remember_token');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "c75c45ba-c156-44f6-8f41-c45f01129bb4",
+          "name": "Profile me",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "me"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a35a7ce6-4fb0-4695-8a4f-ea829e7806d6",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Correct user\",()=>{pm.expect(pm.response.json().data.email).to.eql(pm.collectionVariables.get('email'));});",
+                  "pm.test(\"No password or remember token\",()=>{const u=pm.response.json().data;pm.expect(u).not.to.have.property('password');pm.expect(u).not.to.have.property('remember_token');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "03d88d7d-d64f-4a7b-82b9-7e8346855533",
+          "name": "Profile user",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "user"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "fa619007-94fc-404b-bdea-a26da22311df",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"No password or remember token\",()=>{const u=pm.response.json();pm.expect(u).not.to.have.property('password');pm.expect(u).not.to.have.property('remember_token');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "f5830527-dfef-42a2-8918-1865a6112510",
+          "name": "Duplicate email",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "register"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA Student\",\"email\":\"{{email}}\",\"password\":\"DemoPass123!\",\"password_confirmation\":\"DemoPass123!\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cafcc2d2-2682-4d2e-be24-d557e6724601",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));",
+                  "pm.test(\"Email validation\",()=>{pm.expect(pm.response.json().errors).to.have.property('email');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "3d693123-4cf7-4cf2-bf71-67b1b141ae28",
+          "name": "Bad credentials",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "login"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"{{email}}\",\"password\":\"wrong-password\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d6c7fad7-7e94-45bb-acbd-227b46c78f5a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "8c50fe62-e731-4150-84f7-5e46f9185d0f",
+          "name": "Invalid registration",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "register"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"\",\"email\":\"invalid\",\"password\":\"x\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "288fbca4-d41c-4125-9076-ee41982975e5",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));",
+                  "pm.test(\"Validation fields\",()=>{pm.expect(pm.response.json().errors).to.include.keys('name','email','password');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "6b42dc4c-ff90-4a6c-819a-b1fec77465c1",
+          "name": "Missing token without Accept",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "me"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b6e6ea84-6bdd-4efd-9f95-1e9b0c4869b4",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));",
+                  "pm.test(\"JSON error\",()=>{pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d0ae3588-b750-4186-a8ba-cf12084286b4",
+          "name": "Invalid token",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "me"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "invalid-token",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "9daa6f75-4053-40ce-ba6f-8b5fa79e1912",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "71ea455a-9780-479f-a0c7-938fc36115eb",
+          "name": "Unknown route without Accept",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "unknown"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "8fc39751-fe74-4aa7-ac49-39ddd902d2a2",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404',()=>pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "1f508977-9de5-466d-bcfa-18a4709c18a2",
+      "name": "02 categories",
+      "item": [
+        {
+          "id": "4a227185-e1b0-4f33-b1cb-34fe25e7fab0",
+          "name": "List categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "38ed109a-bef2-43ba-a8e1-9387b3d25e76",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Seeded lookup data\",()=>{pm.expect(pm.response.json().data.length).to.be.at.least(5);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d3e18b94-885f-47b4-82db-90e47e742d5a",
+          "name": "Create categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA categories {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b0386ef8-c9a0-4051-8514-2ef5a980eeef",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201',()=>pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('category_id',String(pm.response.json().data.id));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "c01a95d5-1d29-43ea-a28f-37d3ac983889",
+          "name": "Duplicate categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA categories {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e7553203-d6c4-4337-badc-15f204fc2111",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "12f58e77-2af3-4283-a7b4-a419a5f9b847",
+          "name": "Detail categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{category_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6f32fc18-61e0-4767-84ae-c1968580ba8f",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Relationship returned\",()=>{pm.expect(pm.response.json().data.products).to.be.an('array');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "8a6e6fd9-525a-402a-9138-407d2dc623d1",
+          "name": "PUT categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{category_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA categories updated {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ffc539ac-5492-45f5-a074-fe599057cb2a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "b021c8e1-f206-4054-aebb-5e4136bb789d",
+          "name": "PATCH categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{category_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA categories final {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "34d6a2e3-5bfa-4eff-bdd5-707b25243f51",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9060f11d-ab01-4142-abf0-fc718b6cfcce",
+      "name": "02 brands",
+      "item": [
+        {
+          "id": "458d5715-2a2e-4036-9860-ae50e70c2d98",
+          "name": "List brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c469dd11-e880-4537-84fe-e768c1efb6b2",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Seeded lookup data\",()=>{pm.expect(pm.response.json().data.length).to.be.at.least(5);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "08deef27-dfce-4263-ab45-68a59667fad7",
+          "name": "Create brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA brands {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2168c55d-21ce-4fa9-9e1e-33ee0d6484cc",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201',()=>pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('brand_id',String(pm.response.json().data.id));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "94666db1-8e47-4096-9d31-1c1936c1ee8c",
+          "name": "Duplicate brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA brands {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "1074e661-8910-4dc3-8bca-006d6c67ac03",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "a4aba1f8-2dc3-4713-b8ff-3f63157e828f",
+          "name": "Detail brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brand_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7fb2efe8-ca84-4c0f-8a8b-a8a3f6773d36",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Relationship returned\",()=>{pm.expect(pm.response.json().data.products).to.be.an('array');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "5e74cd0d-da20-4546-9760-b5d0d029aeab",
+          "name": "PUT brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brand_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA brands updated {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "17161b58-6aea-4031-a329-815b3e9ede8b",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "ba075dc7-53c9-44b9-a3d8-b99e408d5267",
+          "name": "PATCH brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brand_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA brands final {{run_id}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6d774c65-d38e-43b8-b93f-33aacc3e4afc",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "e3e2e2d6-43f0-4da2-b3be-66e3067d5392",
+      "name": "03 Products",
+      "item": [
+        {
+          "id": "38d01b7a-6840-4e39-8e31-88793b000c07",
+          "name": "Create product A",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA Mouse {{run_id}} A\",\"description\":\"Disposable QA fixture\",\"image_url\":\"https://example.test/product.jpg\",\"price\":100,\"stock\":8,\"category_id\":{{category_id}},\"brand_id\":{{brand_id}},\"id\":99999999}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c7767ea2-8c12-46ca-9385-195351f712c6",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201',()=>pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('product_id',String(pm.response.json().data.id));",
+                  "pm.test(\"Ignore unvalidated ID\",()=>{pm.expect(pm.response.json().data.id).not.to.eql(99999999);});",
+                  "pm.test(\"Image URL stored\",()=>{pm.expect(pm.response.json().data.image_url).to.eql('https://example.test/product.jpg');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "67ffc747-6c60-43ec-b114-459992e4fc30",
+          "name": "Create product B",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA Mouse {{run_id}} B\",\"description\":\"Disposable QA fixture\",\"image_url\":\"https://example.test/product.jpg\",\"price\":200,\"stock\":8,\"category_id\":{{category_id}},\"brand_id\":{{brand_id}},\"id\":99999999}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2c822a85-dcbe-4698-a4fd-571acc672caf",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201',()=>pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('product_b_id',String(pm.response.json().data.id));",
+                  "pm.test(\"Ignore unvalidated ID\",()=>{pm.expect(pm.response.json().data.id).not.to.eql(99999999);});",
+                  "pm.test(\"Image URL stored\",()=>{pm.expect(pm.response.json().data.image_url).to.eql('https://example.test/product.jpg');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "939c48b7-5b95-456e-9d5e-0db07d17d5ee",
+          "name": "Create product C",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA Mouse {{run_id}} C\",\"description\":\"Disposable QA fixture\",\"image_url\":\"https://example.test/product.jpg\",\"price\":300,\"stock\":8,\"category_id\":{{category_id}},\"brand_id\":{{brand_id}},\"id\":99999999}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "55c02f4a-ce0e-4a19-a7c2-28ba4cc2232f",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201',()=>pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('product_c_id',String(pm.response.json().data.id));",
+                  "pm.test(\"Ignore unvalidated ID\",()=>{pm.expect(pm.response.json().data.id).not.to.eql(99999999);});",
+                  "pm.test(\"Image URL stored\",()=>{pm.expect(pm.response.json().data.image_url).to.eql('https://example.test/product.jpg');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "ec6096db-6db3-41d8-9ebd-dab09c11ff12",
+          "name": "Product detail and relations",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7c29ab1e-8347-4494-91a6-1c15dd5fa3a4",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Category and brand\",()=>{const d=pm.response.json().data;pm.expect(d.category.id).to.eql(Number(pm.collectionVariables.get('category_id')));pm.expect(d.brand.id).to.eql(Number(pm.collectionVariables.get('brand_id')));});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "b004cd85-dcba-4961-817e-a42886d163b0",
+          "name": "PUT product",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"QA Mouse {{run_id}} A\",\"description\":\"Disposable QA fixture\",\"image_url\":\"https://example.test/product.jpg\",\"price\":100,\"stock\":8,\"category_id\":{{category_id}},\"brand_id\":{{brand_id}},\"id\":99999999}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "bd899416-97ab-455d-a15e-3b1fa34a6f26",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Updated price\",()=>{pm.expect(Number(pm.response.json().data.price)).to.eql(100);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "dc4e4796-fca2-4295-87b5-f31fe706f3b5",
+          "name": "PATCH stock",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"stock\":3}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "5e690fa8-788d-4007-a033-da96621eb4d3",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Stock updated\",()=>{pm.expect(Number(pm.response.json().data.stock)).to.eql(3);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "a3aaf645-f292-42da-b4b5-a3cc32b14f8f",
+          "name": "Linked categories cannot be deleted",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{category_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "dd5d574c-f1a8-4363-a1a6-4768735cd239",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409',()=>pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "e2e7d625-487e-44e5-a61b-4a03514688d7",
+          "name": "Linked brands cannot be deleted",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brand_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c47f2f56-f97b-4db9-a16e-8229755eb5d0",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409',()=>pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "098e8222-8b5d-4831-933a-9953a9823bf9",
+      "name": "04 Search sort filters pagination",
+      "item": [
+        {
+          "id": "f60c061d-81eb-41b5-8573-eb56e0a71d60",
+          "name": "Page 2",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "5"
+                },
+                {
+                  "key": "page",
+                  "value": "2"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "884d821d-5bd8-4b88-93d8-fb52a27fed54",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Page boundaries\",()=>{const j=pm.response.json();pm.expect(j.current_page).to.eql(2);pm.expect(j.per_page).to.eql(5);pm.expect(j.data).to.have.lengthOf(5);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d54a372d-d4f3-423c-8bf7-b6534b7ba833",
+          "name": "Keyword search",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "QA%20Mouse%20{{run_id}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "afc0335f-c1f2-40f1-ae85-0d7ac013f18e",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Exact fixture set\",()=>{pm.expect(pm.response.json().total).to.eql(3);pm.response.json().data.forEach(d=>pm.expect(d.name).to.include(pm.collectionVariables.get('run_id')));});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "1a0de28c-a5d8-4dc2-a1b2-7f32be474e5a",
+          "name": "Category and brand filters",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [
+                {
+                  "key": "category_id",
+                  "value": "{{category_id}}"
+                },
+                {
+                  "key": "brand_id",
+                  "value": "{{brand_id}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "8f12471f-b133-48cb-84c0-8fe093607175",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Both filters applied\",()=>{const j=pm.response.json();pm.expect(j.total).to.eql(3);j.data.forEach(d=>{pm.expect(d.category_id).to.eql(Number(pm.collectionVariables.get('category_id')));pm.expect(d.brand_id).to.eql(Number(pm.collectionVariables.get('brand_id')));});});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "832a06c6-b0bd-44d6-8c5e-2563f5767ef6",
+          "name": "Actual price_asc order",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "QA%20Mouse%20{{run_id}}"
+                },
+                {
+                  "key": "sort",
+                  "value": "price_asc"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cdcbee83-e6ef-4c8e-890a-43a421129076",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Price sequence\",()=>{pm.expect(pm.response.json().data.map(d=>Number(d.price))).to.eql([100,200,300]);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "cf337ef7-208d-46a8-95ea-0b993cab083f",
+          "name": "Actual price_desc order",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "QA%20Mouse%20{{run_id}}"
+                },
+                {
+                  "key": "sort",
+                  "value": "price_desc"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "691276c6-6371-46ce-a57e-92931fea5c04",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Price sequence\",()=>{pm.expect(pm.response.json().data.map(d=>Number(d.price))).to.eql([300,200,100]);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "f22db371-40fb-4a84-a518-5143a11eec47",
+          "name": "Combine all filters and second page",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "QA%20Mouse%20{{run_id}}"
+                },
+                {
+                  "key": "category_id",
+                  "value": "{{category_id}}"
+                },
+                {
+                  "key": "brand_id",
+                  "value": "{{brand_id}}"
+                },
+                {
+                  "key": "sort",
+                  "value": "price_desc"
+                },
+                {
+                  "key": "per_page",
+                  "value": "2"
+                },
+                {
+                  "key": "page",
+                  "value": "2"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a3529e90-a5d4-4ed4-9087-81b5d1096aba",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));",
+                  "pm.test(\"Filtered sorted page\",()=>{const j=pm.response.json();pm.expect(j.total).to.eql(3);pm.expect(j.current_page).to.eql(2);pm.expect(j.data.map(d=>Number(d.price))).to.eql([100]);});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "b0d2081d-1dbb-4078-97ba-6acd7cbbc240",
+          "name": "Invalid query whitelist",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "DROP_TABLE"
+                },
+                {
+                  "key": "per_page",
+                  "value": "101"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "category_id",
+                  "value": "99999999"
+                },
+                {
+                  "key": "brand_id",
+                  "value": "99999999"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "88f53a77-a9c9-44ba-916a-6bbbd39cf7a4",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));",
+                  "pm.test(\"Query errors\",()=>{pm.expect(pm.response.json().errors).to.include.keys('sort','per_page','page','category_id','brand_id');});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "27cc3a72-b240-4179-a605-5f83fa864562",
+      "name": "05 Validation and access",
+      "item": [
+        {
+          "id": "c176d637-1a9b-4cf2-9f5a-c35b0ec1b3f1",
+          "name": "Negative values and invalid foreign keys",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"\",\"price\":-1,\"stock\":-1,\"category_id\":99999999,\"brand_id\":99999999,\"image_url\":\"javascript:alert(1)\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2658f089-45b4-4d13-885a-7e4e345c8a24",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));",
+                  "pm.test(\"Product validation errors\",()=>{pm.expect(pm.response.json().errors).to.include.keys('name','price','stock','category_id','brand_id','image_url');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "5f0bf315-dc11-4882-85a6-e73b82844155",
+          "name": "MySQL overflow rejected",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"price\":\"100000000.00\",\"stock\":2147483648}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e25400ac-d285-4c1a-aa46-0a1e1a63bc78",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));",
+                  "pm.test(\"Overflow validation\",()=>{pm.expect(pm.response.json().errors).to.include.keys('price','stock');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "241101e6-2a8d-4f2d-9cc0-63755b40a180",
+          "name": "Incomplete PUT rejected",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"stock\":2}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7358c07c-76a1-4fdf-980d-91385f8cc38e",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422',()=>pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "1a23b01b-6635-4733-9feb-2fb1d7119074",
+          "name": "Unauthenticated create products",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "94ecc783-f6d9-4938-be82-2b3f846568c0",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "a289a158-3924-44f5-bb93-8e03133893c6",
+          "name": "Unauthenticated create categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d3f15728-0f2b-471e-93a2-faafe36fd47e",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "6d2d11f4-5c0b-4cda-b15a-e7a2d23557b9",
+          "name": "Unauthenticated create brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0a1c39e0-4642-4d21-90cb-0776d98ef0ad",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "3083e660-812a-4e58-b477-18e7a385e83d",
+          "name": "Missing product",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "99999999"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "fa656487-9011-4f28-802d-d323b016a613",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404',()=>pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "36a79525-1918-43c0-aa92-0aaee12d11be",
+      "name": "06 Delete own fixtures",
+      "item": [
+        {
+          "id": "b17ce598-4b42-4f9f-9694-c2ad8e650cb7",
+          "name": "Delete product_id",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b592bd45-3553-4fe5-a172-389a22e4ed36",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 204',()=>pm.response.to.have.status(204));",
+                  "pm.test(\"No response body\",()=>{pm.expect(pm.response.text()).to.eql('');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "7b1716c7-061a-4fd0-8c34-ff451010ef7d",
+          "name": "Delete product_b_id",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_b_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "9c0f5480-b049-4b23-910c-35fe70fe0f09",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 204',()=>pm.response.to.have.status(204));",
+                  "pm.test(\"No response body\",()=>{pm.expect(pm.response.text()).to.eql('');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "9e441ea1-ee8b-4118-ae59-6bfeba1ef0aa",
+          "name": "Delete product_c_id",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_c_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "33936fb8-c866-4f8b-8587-f859862f22be",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 204',()=>pm.response.to.have.status(204));",
+                  "pm.test(\"No response body\",()=>{pm.expect(pm.response.text()).to.eql('');});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "ae3ed45a-73ab-4c29-a590-3577683a49e3",
+          "name": "Deleted product is missing",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "products",
+                "{{product_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "33c7eec1-9499-4e04-a886-65817dd5cd60",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404',()=>pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "cd91da34-b29e-4377-a4e4-20ec5659c28d",
+          "name": "Delete own categories",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{category_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "841b142c-7e92-4c4b-a06a-5560d4528fb2",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 204',()=>pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "5e9592b7-645f-4a39-8b94-5a65b800eff5",
+          "name": "Deleted categories is missing",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "categories",
+                "{{category_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "17ebce7e-c982-4e39-b4fa-96251ac0623d",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404',()=>pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "3c0a9238-7660-4e23-8fca-cad6b9cf275b",
+          "name": "Delete own brands",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brand_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "5866bfd5-1058-46f9-a2e5-a6aa0ed6f0b6",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 204',()=>pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d160dcc4-ce38-47ca-b4bf-73b75693cc2a",
+          "name": "Deleted brands is missing",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "brands",
+                "{{brand_id}}"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "03605e46-f222-4d81-b0ae-6d7cce5e3389",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404',()=>pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "40afb25c-c1b8-4e35-9764-6cf9ed54b69c",
+      "name": "07 Token revocation",
+      "item": [
+        {
+          "id": "a28d1f9f-fd61-4898-9211-fcddcd322944",
+          "name": "Logout login token",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "logout"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e3c8cb35-35bd-493c-9cdb-17fb4a8545de",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "5b376ceb-950c-47c0-af48-cd196c121eb8",
+          "name": "Revoked token rejected",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "me"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "27ed0990-ce8c-40d9-b6c6-dab5fd0354f3",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d4ef5d4d-c0ab-4c22-af17-c2e406b51d63",
+          "name": "Registration token remains independent",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "me"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "26264bed-38e7-4bac-a1b3-acba3281741a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token',pm.collectionVariables.get('register_token'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "8c4fa6d0-2333-486a-84bf-6536bd614ca3",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "f541f7f1-fcea-4f36-bd58-e8b7ab0ff251",
+          "name": "Revoke registration token",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "logout"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "faba6e17-71dd-43b4-8129-f3644244782a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200',()=>pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "f89e2196-521a-41ab-97d8-0902098f2496",
+          "name": "All issued tokens revoked",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "me"
+              ],
+              "host": [
+                "{{base_url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "{{token}}",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d4be96d0-a80d-4e96-8234-f79121e6fea7",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401',()=>pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "any",
+      "value": "http://127.0.0.1:8002",
+      "key": "base_url"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "token"
+    }
+  ],
+  "info": {
+    "_postman_id": "c064feda-70a1-4c22-becc-09346c7cb849",
+    "name": "TimeDoor FinalProject — Verified API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Run in order against the isolated QA server on 8002. Creates disposable records and deletes only their saved IDs. Do not run against production. No real credentials are stored.",
+      "type": "text/plain"
+    }
+  }
+}

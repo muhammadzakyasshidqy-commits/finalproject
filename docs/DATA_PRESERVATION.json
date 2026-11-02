@@ -1,0 +1,49 @@
+{
+    "database": "finalproj",
+    "checks": [
+        {
+            "table": "products",
+            "count_before": 27,
+            "count_after": 27,
+            "existing_rows_unchanged": true,
+            "added_rows": 0
+        },
+        {
+            "table": "categories",
+            "count_before": 5,
+            "count_after": 5,
+            "existing_rows_unchanged": true,
+            "added_rows": 0
+        },
+        {
+            "table": "brands",
+            "count_before": 5,
+            "count_after": 5,
+            "existing_rows_unchanged": true,
+            "added_rows": 0
+        },
+        {
+            "table": "users",
+            "count_before": 0,
+            "count_after": 0,
+            "existing_rows_unchanged": true,
+            "added_rows": 0
+        },
+        {
+            "table": "personal_access_tokens",
+            "count_before": 0,
+            "count_after": 0,
+            "existing_rows_unchanged": true,
+            "added_rows": 0
+        },
+        {
+            "table": "migrations",
+            "count_before": 7,
+            "count_after": 8,
+            "existing_rows_unchanged": true,
+            "added_rows": 1
+        }
+    ],
+    "schema_addition": "products.image_url nullable varchar(2048)",
+    "existing_products_with_non_null_image_url": 0
+}

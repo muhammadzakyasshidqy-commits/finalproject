@@ -1,0 +1,456 @@
+{
+  "date": "2026-11-02T00:53:36.577Z",
+  "source": "C:\\laragon\\www\\finalproject",
+  "base_url": "http://127.0.0.1:8002",
+  "database": "finalproject_qa_20261102",
+  "newman_version": "6.2.3",
+  "stats": {
+    "iterations": {
+      "total": 1,
+      "pending": 0,
+      "failed": 0
+    },
+    "items": {
+      "total": 57,
+      "pending": 0,
+      "failed": 0
+    },
+    "scripts": {
+      "total": 59,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequests": {
+      "total": 57,
+      "pending": 0,
+      "failed": 0
+    },
+    "requests": {
+      "total": 57,
+      "pending": 0,
+      "failed": 0
+    },
+    "tests": {
+      "total": 57,
+      "pending": 0,
+      "failed": 0
+    },
+    "assertions": {
+      "total": 90,
+      "pending": 0,
+      "failed": 0
+    },
+    "testScripts": {
+      "total": 57,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequestScripts": {
+      "total": 2,
+      "pending": 0,
+      "failed": 0
+    }
+  },
+  "failures": [],
+  "results": [
+    {
+      "name": "Register disposable QA user",
+      "method": "POST",
+      "status": 201,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Login and save token",
+      "method": "POST",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Profile me",
+      "method": "GET",
+      "status": 200,
+      "assertions": 3,
+      "failed": []
+    },
+    {
+      "name": "Profile user",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Duplicate email",
+      "method": "POST",
+      "status": 422,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Bad credentials",
+      "method": "POST",
+      "status": 401,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Invalid registration",
+      "method": "POST",
+      "status": 422,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Missing token without Accept",
+      "method": "GET",
+      "status": 401,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Invalid token",
+      "method": "GET",
+      "status": 401,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Unknown route without Accept",
+      "method": "GET",
+      "status": 404,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "List categories",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Create categories",
+      "method": "POST",
+      "status": 201,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Duplicate categories",
+      "method": "POST",
+      "status": 422,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Detail categories",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "PUT categories",
+      "method": "PUT",
+      "status": 200,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "PATCH categories",
+      "method": "PATCH",
+      "status": 200,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "List brands",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Create brands",
+      "method": "POST",
+      "status": 201,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Duplicate brands",
+      "method": "POST",
+      "status": 422,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Detail brands",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "PUT brands",
+      "method": "PUT",
+      "status": 200,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "PATCH brands",
+      "method": "PATCH",
+      "status": 200,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Create product A",
+      "method": "POST",
+      "status": 201,
+      "assertions": 3,
+      "failed": []
+    },
+    {
+      "name": "Create product B",
+      "method": "POST",
+      "status": 201,
+      "assertions": 3,
+      "failed": []
+    },
+    {
+      "name": "Create product C",
+      "method": "POST",
+      "status": 201,
+      "assertions": 3,
+      "failed": []
+    },
+    {
+      "name": "Product detail and relations",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "PUT product",
+      "method": "PUT",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "PATCH stock",
+      "method": "PATCH",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Linked categories cannot be deleted",
+      "method": "DELETE",
+      "status": 409,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Linked brands cannot be deleted",
+      "method": "DELETE",
+      "status": 409,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Page 2",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Keyword search",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Category and brand filters",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Actual price_asc order",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Actual price_desc order",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Combine all filters and second page",
+      "method": "GET",
+      "status": 200,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Invalid query whitelist",
+      "method": "GET",
+      "status": 422,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Negative values and invalid foreign keys",
+      "method": "POST",
+      "status": 422,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "MySQL overflow rejected",
+      "method": "PATCH",
+      "status": 422,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Incomplete PUT rejected",
+      "method": "PUT",
+      "status": 422,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Unauthenticated create products",
+      "method": "POST",
+      "status": 401,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Unauthenticated create categories",
+      "method": "POST",
+      "status": 401,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Unauthenticated create brands",
+      "method": "POST",
+      "status": 401,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Missing product",
+      "method": "GET",
+      "status": 404,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Delete product_id",
+      "method": "DELETE",
+      "status": 204,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Delete product_b_id",
+      "method": "DELETE",
+      "status": 204,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Delete product_c_id",
+      "method": "DELETE",
+      "status": 204,
+      "assertions": 2,
+      "failed": []
+    },
+    {
+      "name": "Deleted product is missing",
+      "method": "GET",
+      "status": 404,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Delete own categories",
+      "method": "DELETE",
+      "status": 204,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Deleted categories is missing",
+      "method": "GET",
+      "status": 404,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Delete own brands",
+      "method": "DELETE",
+      "status": 204,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Deleted brands is missing",
+      "method": "GET",
+      "status": 404,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Logout login token",
+      "method": "POST",
+      "status": 200,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Revoked token rejected",
+      "method": "GET",
+      "status": 401,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Registration token remains independent",
+      "method": "GET",
+      "status": 200,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "Revoke registration token",
+      "method": "POST",
+      "status": 200,
+      "assertions": 1,
+      "failed": []
+    },
+    {
+      "name": "All issued tokens revoked",
+      "method": "GET",
+      "status": 401,
+      "assertions": 1,
+      "failed": []
+    }
+  ]
+}
